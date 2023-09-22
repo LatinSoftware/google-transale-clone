@@ -1,4 +1,4 @@
-import { type LANGUAGE_TO, type LANGUAGE_FROM } from './../types.d'
+import { type LanguageFrom, type Language } from './../types.d'
 import { useReducer } from 'react'
 import { type Action, type State } from '../types'
 import { ActionType } from '../enums/actionType'
@@ -6,7 +6,7 @@ import { ActionType } from '../enums/actionType'
 export const initialState: State =
 {
   languageFrom: 'auto',
-  languageTo: 'fr',
+  languageTo: 'en',
   textFrom: '',
   result: '',
   loading: false
@@ -29,6 +29,7 @@ function reducer (state: State, action: Action): State {
     }
   }
   if (type === ActionType.INTERCHANGE_LANGUAGE) {
+    if (state.languageTo === state.languageFrom || state.languageFrom === 'auto') return state
     return {
       ...state,
       languageFrom: state.languageTo,
@@ -58,11 +59,11 @@ export function useStore () {
     dispatch({ type: ActionType.INTERCHANGE_LANGUAGE })
   }
 
-  const SetFromLanguage = ({ language }: { language: LANGUAGE_FROM }) => {
+  const SetFromLanguage = (language: LanguageFrom) => {
     dispatch({ type: ActionType.SET_FROM_LANGUAGE, payload: language })
   }
 
-  const SetToLanguage = ({ language }: { language: LANGUAGE_TO }) => {
+  const SetToLanguage = (language: Language) => {
     dispatch({ type: ActionType.SET_TO_LANGUAGE, payload: language })
   }
 

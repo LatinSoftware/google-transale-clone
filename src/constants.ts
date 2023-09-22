@@ -1,6 +1,8 @@
 export const LANGUAGES = {
-  es: 'Español',
   en: 'English',
+  es: 'Español',
   de: 'Deurch',
   fr: 'French'
 }
+
+export const AUTO_LANGUAGE = 'auto'

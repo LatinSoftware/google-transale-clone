@@ -5,3 +5,8 @@ export enum ActionType {
   SET_FROM_TEXT = 'SET_FROM_TEXT',
   SET_RESULT_TEXT = 'SET_RESULT_TEXT',
 }
+
+export enum LanguageSelectionType {
+  FROM = 'from',
+  TO = 'to'
+}

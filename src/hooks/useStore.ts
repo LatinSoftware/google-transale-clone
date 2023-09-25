@@ -1,6 +1,6 @@
-import { type LanguageFrom, type Language } from './../types.d'
+import { type LanguageFrom, type Language, type Action, type State } from '../types'
 import { useReducer } from 'react'
-import { type Action, type State } from '../types'
+
 import { ActionType } from '../enums/actionType'
 
 export const initialState: State =
@@ -17,34 +17,44 @@ function reducer (state: State, action: Action): State {
   const { type } = action
 
   if (type === ActionType.SET_FROM_LANGUAGE) {
+    const loading = state.textFrom !== ''
     return {
       ...state,
-      languageFrom: action.payload
+      languageFrom: action.payload,
+      result: '',
+      loading
     }
   }
   if (type === ActionType.SET_TO_LANGUAGE) {
+    const loading = state.textFrom !== ''
     return {
       ...state,
-      languageTo: action.payload
+      languageTo: action.payload,
+      loading,
+      result: ''
     }
   }
   if (type === ActionType.INTERCHANGE_LANGUAGE) {
     if (state.languageTo === state.languageFrom || state.languageFrom === 'auto') return state
+    const loading = state.textFrom !== ''
     return {
       ...state,
       languageFrom: state.languageTo,
-      languageTo: state.languageFrom
+      languageTo: state.languageFrom,
+      loading
     }
   }
   if (type === ActionType.SET_FROM_TEXT) {
     return {
       ...state,
+      loading: true,
       textFrom: action.payload
     }
   }
   if (type === ActionType.SET_RESULT_TEXT) {
     return {
       ...state,
+      loading: false,
       result: action.payload
     }
   }
@@ -67,11 +77,11 @@ export function useStore () {
     dispatch({ type: ActionType.SET_TO_LANGUAGE, payload: language })
   }
 
-  const SetFromText = ({ input }: { input: string }) => {
+  const SetFromText = (input: string) => {
     dispatch({ type: ActionType.SET_FROM_TEXT, payload: input })
   }
 
-  const SetResultText = ({ input }: { input: string }) => {
+  const SetResultText = (input: string) => {
     dispatch({ type: ActionType.SET_RESULT_TEXT, payload: input })
   }
 
